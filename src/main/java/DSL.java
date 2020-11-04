@@ -130,7 +130,7 @@ public class DSL {
 		return alert.getText();
 	}
 	
-	public String alertaObterTextoEAceita(){
+	public String alertaObterTextoAceito(){
 		Alert alert = driver.switchTo().alert();
 		String valor = alert.getText();
 		alert.accept();
