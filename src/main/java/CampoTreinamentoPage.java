@@ -1,8 +1,26 @@
+import org.junit.After;
+import org.junit.Before;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class CampoTreinamentoPage {
 	
 	private DSL dsl;
+	private WebDriver driver;
+	
+	@Before
+	public void inicializaDriver(){
+		driver = new FirefoxDriver();
+		driver.manage().window().setSize(new Dimension(1200, 765));
+		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		dsl = new DSL(driver);
+	}
+	
+	@After
+	public void finalizaDriver(){
+		driver.quit();
+	}
 	
 	public CampoTreinamentoPage(WebDriver driver) {
 		dsl = new DSL(driver);
@@ -26,6 +44,9 @@ public class CampoTreinamentoPage {
 	
 	public void setComidaCarne(){
 		dsl.clicarRadio("elementosForm:comidaFavorita:0");
+	}
+	public void setComidaFrango(){
+		dsl.clicarRadio("elementosForm:comidaFavorita:1");
 	}
 	
 	public void setComidaPizza(){

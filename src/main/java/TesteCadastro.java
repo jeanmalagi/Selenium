@@ -33,7 +33,7 @@ public class TesteCadastro {
 		page.setSexoMasculino();
 		page.setComidaPizza();
 		page.setEscolaridade("Mestrado");
-		page.setEsporte("Karate");
+		page.setEsporte("Futebol","Karate");
 		page.cadastrar();
 		
 		Assert.assertTrue(page.obterResultadoCadastro().startsWith("Cadastrado!"));
@@ -42,7 +42,7 @@ public class TesteCadastro {
 		Assert.assertEquals("Sexo: Masculino", page.obterSexoCadastro());
 		Assert.assertEquals("Comida: Pizza", page.obterComidaCadastro());
 		Assert.assertEquals("Escolaridade: mestrado", page.obterEscolaridadeCadastro());
-		Assert.assertEquals("Esportes: Karate", page.obterEsportesCadastro());
+		Assert.assertEquals("Esportes: Futebol Karate", page.obterEsportesCadastro());
 	}
 	
 	@Test
