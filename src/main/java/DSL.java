@@ -138,7 +138,7 @@ public class DSL {
 		
 	}
 	
-	public String alertaObterTextoENega(){
+	public String alertaObterTextoNega(){
 		Alert alert = driver.switchTo().alert();
 		String valor = alert.getText();
 		alert.dismiss();
