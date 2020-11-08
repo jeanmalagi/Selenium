@@ -97,4 +97,5 @@ public class CampoTreinamentoPage {
 	public String obterEsportesCadastro(){
 		return dsl.obterTexto("descEsportes");
 	}
+
 }

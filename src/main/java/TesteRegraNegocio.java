@@ -69,5 +69,4 @@ public class TesteRegraNegocio {
 		Assert.assertEquals("Voce faz esporte ou nao?", alert.getText());
 		driver.quit();
 	}
-
 }
