@@ -9,82 +9,37 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 public class TesteCadastro {
 	
 	private WebDriver driver;
-	private DSL dsl;
 	private CampoTreinamentoPage page;
 
 	@Before
-	public void inicializar(){
+	public void inicializa(){
 		driver = new FirefoxDriver();
 		driver.manage().window().setSize(new Dimension(1200, 765));
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-		dsl = new DSL(driver);
 		page = new CampoTreinamentoPage(driver);
 	}
 	
 	@After
-	public void finalizar(){
+	public void finaliza(){
 		driver.quit();
 	}
 
 	@Test
-	public void deveRealizarCadastrarComSucesso(){
+	public void deveRealizarCadastroComSucesso(){
 		page.setNome("Jean");
 		page.setSobrenome("Malagi");
 		page.setSexoMasculino();
 		page.setComidaPizza();
 		page.setEscolaridade("Mestrado");
-		page.setEsporte("Futebol","Karate");
+		page.setEsporte("Karate");
 		page.cadastrar();
 		
-		Assert.assertTrue(page.obterResultadoCadastro().startsWith("Cadastrado!"));
-		Assert.assertTrue(page.obterNomeCadastro().endsWith("Jean"));
-		Assert.assertEquals("Sobrenome: Malagi", page.obterSobrenomeCadastro());
-		Assert.assertEquals("Sexo: Masculino", page.obterSexoCadastro());
-		Assert.assertEquals("Comida: Pizza", page.obterComidaCadastro());
-		Assert.assertEquals("Escolaridade: mestrado", page.obterEscolaridadeCadastro());
-		Assert.assertEquals("Esportes: Futebol Karate", page.obterEsportesCadastro());
-	}
-	
-	@Test
-	public void deveValidarNomeObrigatorio(){
-		page.cadastrar();
-		Assert.assertEquals("Nome eh obrigatorio", dsl.alertaObterTextoAceito());
-	}
-	
-	@Test
-	public void deveValidarSobrenomeObrigatorio(){
-		page.setNome("Jean");
-		page.cadastrar();
-		Assert.assertEquals("Sobrenome eh obrigatorio", dsl.alertaObterTextoAceito());
-	}
-	
-	@Test
-	public void deveValidarSexoObrigatorio(){
-		page.setNome("Jean");
-		page.setSobrenome("Malagi");
-		page.cadastrar();
-		Assert.assertEquals("Sexo eh obrigatorio", dsl.alertaObterTextoAceito());
-	}
-	
-	@Test
-	public void deveValidarComidaVegetariana(){
-		page.setNome("Jean");
-		page.setSobrenome("Malagi");
-		page.setSexoMasculino();
-		page.setComidaCarne();
-		page.setComidaVegetariano();
-		page.cadastrar();
-		Assert.assertEquals("Tem certeza que voce eh vegetariano?", dsl.alertaObterTextoAceito());
-	}
-	
-	@Test
-	public void deveValidarEsportistaIndeciso(){
-		page.setNome("Jean");
-		page.setSobrenome("Malagi");
-		page.setSexoFeminino();
-		page.setComidaCarne();
-		page.setEsporte("Karate", "O que eh esporte?");
-		page.cadastrar();
-		Assert.assertEquals("Voce faz esporte ou nao?", dsl.alertaObterTextoAceito());
+		Assert.assertEquals("Cadastrado!", page.obterResultadoCadastro());
+		Assert.assertEquals("Jean", page.obterNomeCadastro());
+		Assert.assertEquals("Malagi", page.obterSobrenomeCadastro());
+		Assert.assertEquals("Masculino", page.obterSexoCadastro());
+		Assert.assertEquals("Pizza", page.obterComidaCadastro());
+		Assert.assertEquals("mestrado", page.obterEscolaridadeCadastro());
+		Assert.assertEquals("Karate", page.obterEsportesCadastro());
 	}
 }

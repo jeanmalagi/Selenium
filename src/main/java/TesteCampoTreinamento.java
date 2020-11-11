@@ -7,7 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class TesteCampoTreinamento {
@@ -16,7 +18,7 @@ public class TesteCampoTreinamento {
 	private DSL dsl;
 
 	@Before
-	public void inicializaDriver(){
+	public void inicializa(){
 		driver = new FirefoxDriver();
 		driver.manage().window().setSize(new Dimension(1200, 765));
 		driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
@@ -24,20 +26,28 @@ public class TesteCampoTreinamento {
 	}
 	
 	@After
-	public void finalizaDriver(){
-		driver.quit();
+	public void finaliza(){
+//		driver.quit();
 	}
 	
 	@Test
 	public void testeTextField(){
-		dsl.escrever("elementosForm:nome", "Teste de escrita");
-		Assert.assertEquals("Teste de escrita", dsl.obterValorCampo("elementosForm:nome"));
+		dsl.escrever("elementosForm:nome", "Teste escrita");
+		Assert.assertEquals("Teste escrita", dsl.obterValorCampo("elementosForm:nome"));
+	}
+	
+	@Test
+	public void testTextFieldDuplo(){
+		dsl.escrever("elementosForm:nome", "Jean");
+		Assert.assertEquals("Jean", dsl.obterValorCampo("elementosForm:nome"));
+		dsl.escrever("elementosForm:sobrenome", "Malagi");
+		Assert.assertEquals("Malagi", dsl.obterValorCampo("elementosForm:sobrenome"));
 	}
 	
 	@Test
 	public void deveIntegarirComTextArea(){
-		dsl.escrever("elementosForm:sugestoes", "Teste\n\text\nUltima linha");
-		Assert.assertEquals("Teste\n\text\nUltima linha", dsl.obterValorCampo("elementosForm:sugestoes"));
+		dsl.escrever("elementosForm:sugestoes", "Teste\n\nteste\nUltima linha");
+		Assert.assertEquals("Teste\n\nteste\nUltima linha", dsl.obterValorCampo("elementosForm:sugestoes"));
 	}
 	
 	@Test
@@ -48,14 +58,14 @@ public class TesteCampoTreinamento {
 	
 	@Test
 	public void deveIntegarirComCheckbox(){
-		dsl.clicarCheck("elementosForm:comidaFavorita:3");
-		Assert.assertTrue(dsl.isCheckMarcado("elementosForm:comidaFavorita:3"));
+		dsl.clicarCheck("elementosForm:comidaFavorita:2");
+		Assert.assertTrue(dsl.isCheckMarcado("elementosForm:comidaFavorita:2"));
 	}
 	
 	@Test
 	public void deveIntegarirComCombo(){
-		dsl.selecionarCombo("elementosForm:escolaridade", "Mestrado");
-		Assert.assertEquals("Mestrado", dsl.obterValorCombo("elementosForm:escolaridade"));
+		dsl.selecionarCombo("elementosForm:escolaridade", "2o grau completo");
+		Assert.assertEquals("2o grau completo", dsl.obterValorCombo("elementosForm:escolaridade"));
 	}
 	
 	@Test
@@ -66,18 +76,17 @@ public class TesteCampoTreinamento {
 	
 	@Test
 	public void deveVerificarValoresComboMultiplo(){
-		dsl.selecionarCombo("elementosForm:esportes", "Natacao");
-		dsl.selecionarCombo("elementosForm:esportes", "Corrida");
 		dsl.selecionarCombo("elementosForm:esportes", "Karate");
+		dsl.selecionarCombo("elementosForm:esportes", "Corrida");
 		dsl.selecionarCombo("elementosForm:esportes", "O que eh esporte?");
 
 		List<String> opcoesMarcadas = dsl.obterValoresCombo("elementosForm:esportes");
-		Assert.assertEquals(4, opcoesMarcadas.size());
-		
-		dsl.deselecionarCombo("elementosForm:esportes", "O que eh esporte?");
-		opcoesMarcadas = dsl.obterValoresCombo("elementosForm:esportes");
 		Assert.assertEquals(3, opcoesMarcadas.size());
-		opcoesMarcadas.containsAll(Arrays.asList("Natacao", "Corrida", "Karate"));
+		
+		dsl.deselecionarCombo("elementosForm:esportes", "Corrida");
+		opcoesMarcadas = dsl.obterValoresCombo("elementosForm:esportes");
+		Assert.assertEquals(2, opcoesMarcadas.size());
+		Assert.assertTrue(opcoesMarcadas.containsAll(Arrays.asList("Karate", "O que eh esporte?")));
 	}
 	
 	@Test
@@ -95,11 +104,25 @@ public class TesteCampoTreinamento {
 	
 	@Test
 	public void deveBuscarTextosNaPagina(){
-		
 		Assert.assertEquals("Campo de Treinamento", dsl.obterTexto(By.tagName("h3")));
 		
 		Assert.assertEquals("Cuidado onde clica, muitas armadilhas...", 
 				dsl.obterTexto(By.className("facilAchar")));
+	}
+	
+	@Test
+	public void testJavascript(){
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("document.getElementById('elementosForm:nome').value = 'Escrito via js'");
+		js.executeScript("document.getElementById('elementosForm:sobrenome').type = 'radio'");
+		
+		WebElement element = driver.findElement(By.id("elementosForm:nome"));
+		js.executeScript("arguments[0].style.border = arguments[1]", element, "solid 4px red");
+	}
+	
+	@Test
+	public void deveClicarBotaoTabela(){
+		dsl.clicarBotaoTabela("Escolaridade", "Mestrado", "Radio", "elementosForm:tableUsuarios");
 	}
 	
 }
