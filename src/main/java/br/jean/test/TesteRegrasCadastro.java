@@ -1,3 +1,4 @@
+package br.jean.test;
 import static br.com.jean.core.DriverFactory.getDriver;
 
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import br.com.jean.core.DSL;
 import br.com.jean.core.DriverFactory;
+import br.jean.page.CampoTreinamentoPage;
 
 @RunWith(Parameterized.class)
 public class TesteRegrasCadastro {

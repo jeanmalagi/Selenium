@@ -1,3 +1,4 @@
+package br.jean.test;
 import static br.com.jean.core.DriverFactory.getDriver;
 
 import org.junit.After;

@@ -1,3 +1,4 @@
+package br.jean.test;
 import static br.com.jean.core.DriverFactory.getDriver;
 import static br.com.jean.core.DriverFactory.killDriver;
 
@@ -5,6 +6,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import br.jean.page.CampoTreinamentoPage;
 
 public class TesteCadastro {
 	

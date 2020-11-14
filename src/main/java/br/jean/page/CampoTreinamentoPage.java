@@ -1,3 +1,4 @@
+package br.jean.page;
 import org.openqa.selenium.By;
 
 import br.com.jean.core.DSL;
