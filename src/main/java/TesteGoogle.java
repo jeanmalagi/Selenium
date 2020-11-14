@@ -1,30 +1,32 @@
+import static br.com.jean.core.DriverFactory.getDriver;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+
+import br.com.jean.core.DSL;
+import br.com.jean.core.DriverFactory;
 
 public class TesteGoogle {
 	
-	private WebDriver driver;
-
+	private DSL dsl;
+	
 	@Before
 	public void inicializa(){
-		driver = new FirefoxDriver();
-		driver.manage().window().setSize(new Dimension(1200, 765));
+		getDriver().get("https://www.primefaces.org/showcase/ui/ajax/basic.xhtml");
+		dsl = new DSL();
 	}
 	
 	@After
 	public void finaliza(){
-		driver.quit();
+		DriverFactory.killDriver();
 	}
 	
 	@Test
 	public void teste() {
-		driver.get("http://www.google.com");
-		Assert.assertEquals("Google", driver.getTitle());
+		getDriver().get("http://www.google.com");
+		Assert.assertEquals("Google", getDriver().getTitle());
 	}
 
 }
